@@ -1,0 +1,79 @@
+{% extends "base.html"%}{% block title %}Home{% endblock %} {% block content %}
+<div class="row">
+      <div class="col-sm-3"></div>
+      <div class="col-sm-6">
+        <form method="POST"> 
+            <br /><br />
+            <h3 align="center">Search for offers</h3> 
+            <br/>
+            <div class="input-group">
+                <input type="offerNameSearch" class="form-control" id="myInput" name="offerNameSearch" placeholder="Enter offer name">
+              </div>
+              <br/>
+            <div class="form-select"> 
+        </form>
+        </div>
+      <div class="col-sm-3"></div>
+</div>
+<div class="row">
+
+  <br>
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Offer name</th>
+        <th>Description</th>
+        <th>Type</th>
+        <th>Price per day</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="myTable">
+      <tr>
+        <td>Buszujacy w zbozu</td>
+        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
+        <td>Book</td>
+        <td>7.00</td>
+        <td>Ready to borrow</td>
+
+      </tr>
+      <tr>
+        <td>Catan</td>
+        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
+        <td>Book</td>
+        <td>7.00</td>
+        <td>Ready to borrow</td>
+
+      </tr>
+      <tr>
+        <td>NOWY WSPANIALY SWIAT</td>
+        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
+        <td>Book</td>
+        <td>7.00</td>
+        <td>Ready to borrow</td>
+      </tr>
+      <tr>
+        <td>Wiertarka Bosh 1000W</td>
+        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
+        <td>Tool</td>
+        <td>10.00</td>
+        <td>Ready to borrow</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  <p>Try to start typing to search for products</p>
+</div>
+ 
+
+<script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+{% endblock %}
