@@ -1,18 +1,46 @@
-from flask import Blueprint, render_template, request, flash
+from website import views
+from flask import Blueprint, render_template, request, flash, redirect, session
+from flask.helpers import url_for
 from werkzeug.security import generate_password_hash, check_password_hash
+from .models import readData
 
 auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods = ['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        print(request.form)
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        
+        if readData('SELECT password FROM Users Where email =' +"'"+email+"'") == False:
+            flash('Wrong email or password, please try again.',category='error')
+
+
+        elif  readData('SELECT password FROM Users Where email =' +"'"+email+"'")[0]  == password:
+            flash('Logged succesfully!', category='success')
+            user = readData('SELECT * FROM Users Where email =' +"'"+email+"'")
+            session['loggedin'] = True
+            session['id'] = user[0]
+            session['username'] = user[2]
+
+
+            return redirect(url_for('views.search'))
+            
+        else:
+            flash('Wrong email or password, please try again.',category='error')
+
+
 
     return render_template('login.html')
 
 @auth.route('/logout')
 def logout():
-    return "<p>Logout</p>"
+    session.pop('loggedin', None)
+    session.pop('id', None)
+    session.pop('username', None)
+   
+    return redirect(url_for('views.login'))
 
 @auth.route('/sign_up', methods = ['GET', 'POST'])
 def sign_up():
@@ -33,8 +61,9 @@ def sign_up():
             return render_template('choose_inpost.html')
         print(request.form)
         
-
+    
     return render_template('sign_up.html')
+    
 
 
 @auth.route('/choose_inpost', methods = ['GET', 'POST'])
@@ -42,7 +71,10 @@ def choose_inpost():
     if request.method == 'POST':
         print(request.form)
 
-    return render_template('choose_inpost.html')
+    if session['loggedin'] == True:
+        return render_template('choose_inpost.html', session=True)
+    else:
+        return redirect(url_for('views.login'))
 
 @auth.route('/search', methods = ['GET', 'POST'])
 def search():
@@ -66,14 +98,20 @@ def search():
             return render_template('search.html')
         print(request.form)
 
-    return render_template('search.html')
+    if session['loggedin'] == True:
+        return render_template('search.html', session=True)
+    else:
+        return redirect(url_for('views.login'))
 
 @auth.route('/create', methods = ['GET', 'POST'])
 def create():
     if request.method == 'POST':
         print(request.form)
 
-    return render_template('create.html')
+    if session['loggedin'] == True:
+        return render_template('create.html', session=True)
+    else:
+        return redirect(url_for('views.login'))
 
 @auth.route('/my_offers', methods = ['GET', 'POST'])
 def my_offers():
@@ -84,6 +122,9 @@ def my_offers():
             flash('You succesfuly deleted your offer, reload the site to see the changes.')
         print(request.form)
 
-    return render_template('my_offers.html')
+    if session['loggedin'] == True:
+        return render_template('my_offers.html', session=True)
+    else:
+        return redirect(url_for('views.login'))
 
 
