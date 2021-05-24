@@ -29,36 +29,15 @@
       </tr>
     </thead>
     <tbody id="myTable">
+      {% for row in data %}
       <tr>
-        <td>Buszujacy w zbozu</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Book</td>
-        <td>7.00</td>
-        <td>Ready to borrow</td>
-
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+        <td>{{row[7]}}</td>
       </tr>
-      <tr>
-        <td>Catan</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Book</td>
-        <td>7.00</td>
-        <td>Ready to borrow</td>
-
-      </tr>
-      <tr>
-        <td>NOWY WSPANIALY SWIAT</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Book</td>
-        <td>7.00</td>
-        <td>Ready to borrow</td>
-      </tr>
-      <tr>
-        <td>Wiertarka Bosh 1000W</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Tool</td>
-        <td>10.00</td>
-        <td>Ready to borrow</td>
-      </tr>
+      {% endfor %}
     </tbody>
   </table>
   

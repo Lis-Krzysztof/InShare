@@ -11,12 +11,16 @@
             <br />         
             <form method="POST">
                 <br />
-                <div class="form-group"> 
-                    <input type="paczkomatId" class="form-control" id="paczkomatId" name="paczkomatId" placeholder="Enter paczkomat Id" />
+                <div class="form-group">
+                    <select name="paczkomatId" data-live-search="true" id="paczkomatId" class="form-control" title="paczkomatId"> 
+                    <option>Select Paczkomat Code</option>   
+                    {% for row in data %}
+                    <option value="{{row[0]}}">{{row[1]}}</option>
+                    {% endfor %}
+                    </select>
                 </div>
                 <br /> 
-                <button type="submit" class="btn btn-primary">Submit</button>
-                <button type="submit" class="btn btn-primary">Skip</button> 
+                <button type="submit" class="btn btn-primary" >Submit</button>
             </form>
         </div>
       <div class="col-sm-3"></div>

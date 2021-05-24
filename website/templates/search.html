@@ -30,50 +30,115 @@
       </tr>
     </thead>
     <tbody id="myTable">
+      {% for row in data %}
       <tr>
-        <td>Buszujacy w zbozu</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Book</td>
-        <td>7.00</td>
-        <td>Ready to borrow</td>
+        <td>{{row[1]}}</td>
+        <td>{{row[2]}}</td>
+        <td>{{row[3]}}</td>
+        <td>{{row[4]}}</td>
+        <td>{{row[7]}}</td>
         <td>
-            <button type="Rent" class="btn btn-success" data-toggle="modal" data-target="#rentModal">Rent</button>
-            <button type="Report" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report</button>
+
+          {% if row[7]=='Ready to borrow' %}
+          <button type="Rent" class="btn btn-success" data-toggle="modal" data-target="#rentModal{{row[0]}}">Rent</button>
+          {% else %}
+          <button type="Rent" class="btn" data-toggle="modal" data-target="#rentModal{{row[0]}}" disabled>Rent</button>
+          {% endif %}
+          <button type="Report" class="btn btn-warning" data-toggle="modal" data-target="#reportModal{{row[0]}}">Report</button>
         </td>
       </tr>
-      <tr>
-        <td>Catan</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Book</td>
-        <td>7.00</td>
-        <td>Ready to borrow</td>
-        <td>
-            <button type="Rent" class="btn btn-success" data-toggle="modal" data-target="#rentModal">Rent</button>
-            <button type="Report" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report</button>
-        </td>
-      </tr>
-      <tr>
-        <td>NOWY WSPANIALY SWIAT</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Book</td>
-        <td>7.00</td>
-        <td>Ready to borrow</td>
-        <td>
-            <button type="Rent" class="btn btn-success" data-toggle="modal" data-target="#rentModal">Rent</button>
-            <button type="Report" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Wiertarka Bosh 1000W</td>
-        <td>Buszujacy w zbozu J. D. Salinger, Oprawa: broszurowa</td>
-        <td>Tool</td>
-        <td>10.00</td>
-        <td>Ready to borrow</td>
-        <td>
-            <button type="Rent" class="btn btn-success" data-toggle="modal" data-target="#rentModal">Rent</button>
-            <button type="Report" class="btn btn-warning" data-toggle="modal" data-target="#reportModal">Report</button>
-        </td>
-      </tr>
+      
+
+<!--Rent Modal -->
+<div class="modal fade" id="rentModal{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form method="POST"> 
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Rent</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <h3 align="center">{{row[1]}}</h3>
+          <h5>{{row[2]}}</h3>
+          <h5>Value: {{row[5]}} </h5>
+          <h5>Price per day: {{row[4]}}</h5>
+          <h5>Rented from: {{row[6]}}</h5>
+      </div>
+      
+          <div class="form-group">
+            <div style="margin:10px auto;">
+              <br /><br />
+              <label for='rentForDays'>For how long you would like to rent it?</label>  
+              <input type="rentForDays" class="form-control" id="rentForDays" name="rentForDays" placeholder="Enter number of days" />
+              <input type="rentOfferId" class="form-control" id="rentOfferId" name="rentOfferId" hidden value="{{row[0]}}"/>
+              <br />
+              <label for='rentForDays'>How would you like to pay?</label>  
+              <br />
+              <div class="form-select"> 
+                  <select class="form-select"  id="paymentMethod" name="paymentMethod">
+                      <option value=1>Card</option>
+                      <option value=2>Bank transfer</option>
+                  </select>
+              </div>
+            </div>
+          </div> 
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-success">Rent</button>
+        
+      </div>
+    </div>
+  </div>
+  </form>
+</div>
+
+
+
+
+<!--Raport Modal -->
+<div class="modal fade" id="reportModal{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form method="POST">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Raport Offer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-group">
+              <label for="reportDescription">Describe the prroblem:</label> 
+              <textarea type="reportDescription" class="form-control" id="reportDescription" name="reportDescription" placeholder="..." ></textarea>
+              <input type="reportOfferId" class="form-control" id="reportOfferId" name="reportOfferId" hidden value="{{row[0]}}"/>
+          </div> 
+          <div class="form-group"> 
+              <label for="reportType">Report category</label> 
+              <br />
+              <div class="form-select"> 
+                  <select class="form-select"  id="reportType" name="reportType">
+                      <option value=4>Offensive content</option>
+                      <option value=7>Offer expired</option>
+                      <option value=8>Offer inconsistent with the regulations</option>
+                  </select>
+              </div>
+          </div>
+          
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submitt" class="btn btn-danger">Report</button>
+      </div>
+    </div>
+  </div>
+  </form>  
+</div>  
+
+      {% endfor %}
     </tbody>
   </table>
   
@@ -81,80 +146,7 @@
 </div>
 
 
-<!--Rent Modal -->
-<div class="modal fade" id="rentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form method="POST"> 
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Rent</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <h3 align="center">Wiertarka Bosh 1000W</h3>
-            <h5>Najwieksza kompaktowosc i najnizsza waga (tylko 1,7 kg). Prosta w obsludze, dwutulejowy uchwyt wiertarski, 25% szybszy czas wiercenia w betonie dzieki nowemu mechanizmowi udarowemu. Antyposlizgowy uchwyt, miekka rekojesc</h3>
-            <h5>Value: 270</h5>
-            <h5>Price per day: 10</h5>
-            <h5>Rented from: wojciechklos</h5>
-        </div>
-        
-            <div class="form-group">
-                <br /><br />
-                <label for='rentForDays'>For how long you would like to rent it?</label>  
-                <input type="rentForDays" class="form-control" id="rentForDays" name="rentForDays" placeholder="Enter number of days" />
-            </div> 
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-success">Rent</button>
-        </div>
-      </div>
-    </div>
-    </form>
-  </div>
 
-
-
-  
-<!--Raport Modal -->
-<div class="modal fade" id="reportModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <form method="POST">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Raport Offer</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <label for="reportDescription">Describe the prroblem:</label> 
-                <textarea type="reportDescription" class="form-control" id="reportDescription" name="reportDescription" placeholder="..." ></textarea>
-            </div> 
-            <div class="form-group"> 
-                <label for="reportType">Report category</label> 
-                <br />
-                <div class="form-select"> 
-                    <select class="form-select  id="reportType" name="reportType">
-                        <option>Offensive content</option>
-                        <option>Offer expired</option>
-                        <option>Offer inconsistent with the regulations</option>
-                    </select>
-                </div>
-            </div>
-            
-          
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submitt" class="btn btn-danger">Report</button>
-        </div>
-      </div>
-    </div>
-    </form>
-  </div>  
 
 <script>
     $(document).ready(function(){
