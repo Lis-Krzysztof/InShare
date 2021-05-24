@@ -1,7 +1,12 @@
 from website import views
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask.helpers import url_for
+<<<<<<< HEAD
 from .models import readData, readTable, raportOffer, updatePaczkomatID
+=======
+from werkzeug.security import generate_password_hash, check_password_hash
+from .models import readData
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 auth = Blueprint('auth', __name__)
 
@@ -15,7 +20,10 @@ def login():
         
         if readData('SELECT password FROM Users Where email =' +"'"+email+"'") == False:
             flash('Wrong email or password, please try again.',category='error')
+<<<<<<< HEAD
             session['loggedin'] = False
+=======
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 
         elif  readData('SELECT password FROM Users Where email =' +"'"+email+"'")[0]  == password:
@@ -30,7 +38,10 @@ def login():
             
         else:
             flash('Wrong email or password, please try again.',category='error')
+<<<<<<< HEAD
             session['loggedin'] = False
+=======
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 
 
@@ -73,6 +84,7 @@ def choose_inpost():
     all_data = readTable('SELECT * FROM Paczkomaty order by kod')
     paczkomatId = request.form.get('paczkomatId')
 
+<<<<<<< HEAD
 
     if request.method == 'POST':
         if paczkomatId == 'Select Paczkomat Code':
@@ -85,6 +97,12 @@ def choose_inpost():
             
     return render_template('choose_inpost.html', session=True, data = all_data)
     
+=======
+    if session['loggedin'] == True:
+        return render_template('choose_inpost.html', session=True)
+    else:
+        return redirect(url_for('views.login'))
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 @auth.route('/search', methods = ['GET', 'POST'])
 def search():
@@ -129,6 +147,13 @@ def search():
 
     
 
+<<<<<<< HEAD
+=======
+    if session['loggedin'] == True:
+        return render_template('search.html', session=True)
+    else:
+        return redirect(url_for('views.login'))
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 @auth.route('/create', methods = ['GET', 'POST'])
 def create():
@@ -153,3 +178,8 @@ def my_offers():
         return render_template('my_offers.html', session=True)
     else:
         return redirect(url_for('views.login'))
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b

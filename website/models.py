@@ -2,14 +2,22 @@ import pyodbc
 import base64
 
 
+<<<<<<< HEAD
 query='SELECT * FROM dbo.ActiveOffers'
+=======
+query='SELECT * FROM dbo.Users'
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 
 
 
 def readData(query):
     server = '.' 
+<<<<<<< HEAD
     database = 'InShare' 
+=======
+    database = 'test1' 
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
     username = 'user2' 
     password = "A"
     con = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+'; DATABASE='+database+'; UID='+username+';PWD='+password, autocommit=True)
@@ -25,6 +33,7 @@ def readData(query):
         cur.close()
         return row_to_list
     
+<<<<<<< HEAD
 def readTable(query):
     server = '.' 
     database = 'InShare' 
@@ -62,3 +71,6 @@ def updatePaczkomatID(userId,paczkomatId):
     query =  f'EXECUTE updatePaczkomatID @userId = {userId}, @paczkomatId = {paczkomatId} '
     cur.execute(query)
     cur.close()
+=======
+readData(query)
+>>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
