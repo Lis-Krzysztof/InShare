@@ -100,6 +100,7 @@ def search():
         print(rentForDays,rentOfferId,session['id'], paymentMethod,reportOfferId,reportType,reportDescription)
 
         if reportDescription and reportType and reportOfferId:
+            reportTypeId = 8
             if reportType == 'Offer expired':
                 reportTypeId = 7
             elif reportType == 'Offensive content':
@@ -152,5 +153,3 @@ def my_offers():
         return render_template('my_offers.html', session=True)
     else:
         return redirect(url_for('views.login'))
-
-
