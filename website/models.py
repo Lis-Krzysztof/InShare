@@ -2,22 +2,14 @@ import pyodbc
 import base64
 
 
-<<<<<<< HEAD
 query='SELECT * FROM dbo.ActiveOffers'
-=======
-query='SELECT * FROM dbo.Users'
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 
 
 
 def readData(query):
     server = '.' 
-<<<<<<< HEAD
     database = 'InShare' 
-=======
-    database = 'test1' 
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
     username = 'user2' 
     password = "A"
     con = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+'; DATABASE='+database+'; UID='+username+';PWD='+password, autocommit=True)
@@ -33,7 +25,6 @@ def readData(query):
         cur.close()
         return row_to_list
     
-<<<<<<< HEAD
 def readTable(query):
     server = '.' 
     database = 'InShare' 
@@ -71,6 +62,49 @@ def updatePaczkomatID(userId,paczkomatId):
     query =  f'EXECUTE updatePaczkomatID @userId = {userId}, @paczkomatId = {paczkomatId} '
     cur.execute(query)
     cur.close()
-=======
-readData(query)
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
+
+
+def orderOffer(borrowedTo, days, paymentMetodId, offerId):
+    server = '.' 
+    database = 'InShare' 
+    username = 'user2' 
+    password = "A"
+    con = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+'; DATABASE='+database+'; UID='+username+';PWD='+password, autocommit=True)
+    cur = con.cursor()
+    query =  f'EXECUTE orderOffer @borrowedTo = {borrowedTo}, @days = {days} , @paymentMetodId = {paymentMetodId}, @offerId = {offerId}'
+    cur.execute(query)
+    cur.close()
+
+
+def deleteOffer(offerId):
+    server = '.' 
+    database = 'InShare' 
+    username = 'user2' 
+    password = "A"
+    con = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+'; DATABASE='+database+'; UID='+username+';PWD='+password, autocommit=True)
+    cur = con.cursor()
+    query =  f'EXECUTE deleteOffer @offerId = {offerId}'
+    cur.execute(query)
+    cur.close()
+
+def createOffer( Name, Description, userId, offerTypeId, value, price_per_day, offerStatusId):
+    server = '.' 
+    database = 'InShare' 
+    username = 'user2' 
+    password = "A"
+    con = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+'; DATABASE='+database+'; UID='+username+';PWD='+password, autocommit=True)
+    cur = con.cursor()
+    query =  'EXECUTE createOffer @Name = ' + "'" + str(Name) + "'" +', @Description = ' + "'" + str(Description) + "'" +',@userId = ' + str(userId) +',@offerTypeId = ' + str(offerTypeId) +',@value = ' + str(value) +',@price_per_day = ' + str(price_per_day) +',@offerStatusId = ' + str(offerStatusId) 
+    cur.execute(query)
+    cur.close()
+
+def updateOffer(Name, Description, offerTypeId, value, price_per_day, offerStatusId, offerId):
+    server = '.' 
+    database = 'InShare' 
+    username = 'user2' 
+    password = "A"
+    con = pyodbc.connect('DRIVER={SQL Server Native Client 11.0};SERVER='+server+'; DATABASE='+database+'; UID='+username+';PWD='+password, autocommit=True)
+    cur = con.cursor()
+    query =  'EXECUTE updateOffer @Name = ' + "'" + str(Name) + "'" + ', @Description = ' + "'" + str(Description) + "'"  + ',@offerTypeId = ' + str(offerTypeId) + ',@value = ' + str(value) +',@price_per_day = ' + str(price_per_day) +',@offerStatusId = ' + str(offerStatusId) +',@offerId = ' + str(offerId) 
+    cur.execute(query)
+    cur.close()

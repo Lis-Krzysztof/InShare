@@ -1,12 +1,7 @@
 from website import views
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask.helpers import url_for
-<<<<<<< HEAD
-from .models import readData, readTable, raportOffer, updatePaczkomatID
-=======
-from werkzeug.security import generate_password_hash, check_password_hash
-from .models import readData
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
+from .models import readData, readTable, raportOffer, updatePaczkomatID,orderOffer,deleteOffer,createOffer, updateOffer
 
 auth = Blueprint('auth', __name__)
 
@@ -20,10 +15,7 @@ def login():
         
         if readData('SELECT password FROM Users Where email =' +"'"+email+"'") == False:
             flash('Wrong email or password, please try again.',category='error')
-<<<<<<< HEAD
             session['loggedin'] = False
-=======
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 
         elif  readData('SELECT password FROM Users Where email =' +"'"+email+"'")[0]  == password:
@@ -38,10 +30,7 @@ def login():
             
         else:
             flash('Wrong email or password, please try again.',category='error')
-<<<<<<< HEAD
             session['loggedin'] = False
-=======
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 
 
@@ -84,7 +73,6 @@ def choose_inpost():
     all_data = readTable('SELECT * FROM Paczkomaty order by kod')
     paczkomatId = request.form.get('paczkomatId')
 
-<<<<<<< HEAD
 
     if request.method == 'POST':
         if paczkomatId == 'Select Paczkomat Code':
@@ -97,12 +85,6 @@ def choose_inpost():
             
     return render_template('choose_inpost.html', session=True, data = all_data)
     
-=======
-    if session['loggedin'] == True:
-        return render_template('choose_inpost.html', session=True)
-    else:
-        return redirect(url_for('views.login'))
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 @auth.route('/search', methods = ['GET', 'POST'])
 def search():
@@ -115,7 +97,6 @@ def search():
         rentOfferId = request.form.get('rentOfferId')
         reportOfferId = request.form.get('reportOfferId')
         paymentMethod = request.form.get('paymentMethod')
-        print(rentForDays,rentOfferId,session['id'], paymentMethod,reportOfferId,reportType,reportDescription)
 
         if reportDescription and reportType and reportOfferId:
             reportTypeId = 8
@@ -128,18 +109,20 @@ def search():
             raportOffer(reportDescription,reportTypeId,reportOfferId)
             flash(f'Raported offer: {reportType}',category='success')
             return render_template('search.html', data = all_data,session=True) 
+
         elif str(rentForDays).isdigit():
-            if rentForDays == 1:
-                flash("Rented offer for a day",category='success')
-                return render_template('search.html', data = all_data,session=True)
+            orderOffer(session['id'],rentForDays,paymentMethod,rentOfferId)
+            if rentForDays == '1':
+                flash("Rented offer for a day",category='success')            
             else:
                 flash(f'Rented offer for {rentForDays} days', category='success')
-                return render_template('search.html', data = all_data,session=True)
+            all_data = readTable('SELECT * FROM ActiveOffers')            
+            return render_template('search.html', data = all_data,session=True)
+
         elif str(rentForDays).isdigit() == False:
             flash('Please pass number of days you would like to rent a product!', category='error')
             return render_template('search.html', data = all_data,session=True)
         
-
     if session['loggedin'] == True:
         return render_template('search.html', session=True)
     else:
@@ -147,18 +130,37 @@ def search():
 
     
 
-<<<<<<< HEAD
-=======
-    if session['loggedin'] == True:
-        return render_template('search.html', session=True)
-    else:
-        return redirect(url_for('views.login'))
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
 
 @auth.route('/create', methods = ['GET', 'POST'])
 def create():
     if request.method == 'POST':
+
         print(request.form)
+        offerName = request.form.get('offerName')
+        offerDescription = request.form.get('offerDescription')
+        offerTypeSearch = request.form.get('offerTypeSearch')
+        offerValue = request.form.get('offerValue')
+        offerPrice = request.form.get('offerPrice')
+        offerStatus = request.form.get('offerStatus')
+
+
+        if offerName == '':
+            flash('Please insert offer name', category='error')
+        elif offerDescription == '':
+            flash('Please insert offer description', category='error')
+        elif offerValue == '':
+            flash('Please insert offer value', category='error')
+        elif offerPrice == '':
+            flash('Please insert offer price per day', category='error')
+        elif str(offerValue).isdigit() == False:
+            flash('Please insert correct offer value', category='error')
+        elif str(offerPrice).isdigit() == False:
+            flash('Please insert correct offer price per day', category='error')
+        else:
+            createOffer( offerName, offerDescription, session['id'], offerTypeSearch, offerValue, offerPrice, offerStatus)
+            flash('Succesfully created offer!', category='succes')
+            return redirect(url_for('views.my_offers'))
+        
 
     if session['loggedin'] == True:
         return render_template('create.html', session=True)
@@ -167,19 +169,38 @@ def create():
 
 @auth.route('/my_offers', methods = ['GET', 'POST'])
 def my_offers():
+    all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']) )  
     if request.method == 'POST':
-        deleteOffer = request.form.get("deleteOffer")
+        deleteOfferString = request.form.get("deleteOffer")
+        deleteOfferId = request.form.get('deleteOfferId')
+        offerName = request.form.get('offerName')
+        offerDescription = request.form.get('offerDescription')
+        offerTypeId = request.form.get('offerTypeId')
+        offerValue = request.form.get('offerValue')
+        offerPrice = request.form.get('offerPrice')
+        offerStatus = request.form.get('offerStatus')
+        editOfferId = request.form.get('editOfferId')
+        
 
-        if deleteOffer == 'Delete':
-            flash('You succesfuly deleted your offer, reload the site to see the changes.')
-        print(request.form)
+        if deleteOfferString:
+            if deleteOfferString.lower() == 'delete':
+                deleteOffer(deleteOfferId)
+                flash('You succesfuly deleted your offer',category='success')
+                all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']) )
+                return render_template('my_offers.html', session=True, data = all_data)
+
+            else:
+                flash('You have to pass word correctly in order to delete offer', category='error')
+
+
+        if offerName:
+            flash('Offer updated', category='success')
+            updateOffer(offerName, offerDescription, offerTypeId, offerValue, offerPrice, offerStatus, editOfferId)
+            all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']) )
+            return render_template('my_offers.html', session=True, data = all_data)
+
 
     if session['loggedin'] == True:
-        return render_template('my_offers.html', session=True)
+        return render_template('my_offers.html', session=True, data = all_data)
     else:
         return redirect(url_for('views.login'))
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 676ac8badbf7b7f069fa29c94ee0f848a10dea7b
