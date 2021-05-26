@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template,redirect, url_for
 from .models import readData, readTable
 
 from flask.globals import session
@@ -29,4 +29,11 @@ def login():
 @views.route('/my_offers')
 def my_offers():
     all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']) )
-    return render_template('my_offers.html', session=True, data = all_data)
+    if all_data:
+        return render_template('my_offers.html', session=True, data = all_data)
+    else:
+        return redirect(url_for('views.create'))
+
+@views.route('/create')
+def create():
+    return render_template('create.html', session=True)

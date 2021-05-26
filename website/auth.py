@@ -1,7 +1,8 @@
 from website import views
 from flask import Blueprint, render_template, request, flash, redirect, session
 from flask.helpers import url_for
-from .models import readData, readTable, raportOffer, updatePaczkomatID,orderOffer,deleteOffer,createOffer, updateOffer
+from .models import readData, readTable, raportOffer, updatePaczkomatID,orderOffer,deleteOffer,createOffer, updateOffer, addUser
+from collections.abc import Iterable
 
 auth = Blueprint('auth', __name__)
 
@@ -49,8 +50,10 @@ def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
         firstName = request.form.get('firstName')
+        surname = request.form.get('surname')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        username = request.form.get('username')
 
         if len(email) < 3 or '@' not in email:
             flash('Invalid email', category='error')
@@ -59,9 +62,13 @@ def sign_up():
         elif len(password1) < 7:
             flash('Password must be at least 7 characters', category='error')
         else:
+            addUser(email, username, firstName, surname, password1)
+            user = readData('SELECT * FROM Users Where email =' +"'"+email+"'")
+            session['loggedin'] = True
+            session['id'] = user[0]
             flash('Account created!', category='success')
-            return redirect(url_for('vievs.choose_inpost'))
-        print(request.form)
+            return redirect(url_for('views.choose_inpost'))
+        
         
     
     return render_template('sign_up.html')
@@ -76,7 +83,6 @@ def choose_inpost():
 
     if request.method == 'POST':
         if paczkomatId == 'Select Paczkomat Code':
-            flash('You need to set paczkomat in order to move along!', category='error')
             return render_template('choose_inpost.html', session=True, data = all_data)
         else:
             updatePaczkomatID(session['id'],paczkomatId)
@@ -109,11 +115,15 @@ def search():
             raportOffer(reportDescription,reportTypeId,reportOfferId)
             flash(f'Raported offer: {reportType}',category='success')
             return render_template('search.html', data = all_data,session=True) 
+        
+        elif int(rentForDays) < 1 or int(rentForDays) > 365:
+            flash('You can only rent a product between 1 and 365 days', category='error')
+            return render_template('search.html', data = all_data,session=True)
 
         elif str(rentForDays).isdigit():
             orderOffer(session['id'],rentForDays,paymentMethod,rentOfferId)
             if rentForDays == '1':
-                flash("Rented offer for a day",category='success')            
+                flash("Rented offer for a day",category='success')
             else:
                 flash(f'Rented offer for {rentForDays} days', category='success')
             all_data = readTable('SELECT * FROM ActiveOffers')            
@@ -135,7 +145,7 @@ def search():
 def create():
     if request.method == 'POST':
 
-        print(request.form)
+
         offerName = request.form.get('offerName')
         offerDescription = request.form.get('offerDescription')
         offerTypeSearch = request.form.get('offerTypeSearch')
@@ -169,7 +179,10 @@ def create():
 
 @auth.route('/my_offers', methods = ['GET', 'POST'])
 def my_offers():
-    all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']) )  
+    
+    all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']))  
+
+
     if request.method == 'POST':
         deleteOfferString = request.form.get("deleteOffer")
         deleteOfferId = request.form.get('deleteOfferId')
@@ -181,7 +194,6 @@ def my_offers():
         offerStatus = request.form.get('offerStatus')
         editOfferId = request.form.get('editOfferId')
         
-
         if deleteOfferString:
             if deleteOfferString.lower() == 'delete':
                 deleteOffer(deleteOfferId)
@@ -199,8 +211,14 @@ def my_offers():
             all_data = readTable('SELECT * FROM MyOffers WHERE userId = '+ str(session['id']) )
             return render_template('my_offers.html', session=True, data = all_data)
 
-
     if session['loggedin'] == True:
         return render_template('my_offers.html', session=True, data = all_data)
     else:
         return redirect(url_for('views.login'))
+
+
+@auth.route('/orders', methods = ['GET', 'POST'])
+def orders():
+    all_data = readTable('SELECT * FROM MyOrders where userId = ' + str(session['id']) + ' or userId2 = ' + str(session['id']))
+            
+    return render_template('orders.html', session=True, data = all_data)
