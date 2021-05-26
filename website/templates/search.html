@@ -35,7 +35,7 @@
         <td>{{row[1]}}</td>
         <td>{{row[2]}}</td>
         <td>{{row[3]}}</td>
-        <td>{{row[4]}}</td>
+        <td>{{row[4] | int}} zł</td>
         <td>{{row[7]}}</td>
         <td>
           {% if row[7]=='Ready to borrow' %}
@@ -62,8 +62,8 @@
       <div class="modal-body">
           <h3 align="center">{{row[1]}}</h3>
           <h5>{{row[2]}}</h3>
-          <h5>Value: {{row[5]}} </h5>
-          <h5>Price per day: {{row[4]}}</h5>
+          <h5>Value: {{row[5] | int}} zł </h5>
+          <h5>Price per day: {{row[4]| int}} zł</h5>
           <h5>Rented from: {{row[6]}}</h5>
       </div>
       

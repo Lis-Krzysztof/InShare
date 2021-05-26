@@ -91,7 +91,7 @@
                 <span class="input-group-text">$</span>
                 
               </div>
-              <input type="offerValue" class="form-control" id="offerValue" name="offerValue" value="{{row[5]}}" placeholder="{{row[5]}}">
+              <input type="offerValue" class="form-control" id="offerValue" name="offerValue" value="{{row[5]| int}}" placeholder="{{row[5]}}">
               <div class="input-group-append">
                   <span class="input-group-text">.00</span>
                 </div>
@@ -102,7 +102,7 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">$</span>  
               </div>
-              <input type="offerPrice" class="form-control" id="offerPrice" name="offerPrice" value="{{row[4]}}" placeholder="{{row[4]}}" />
+              <input type="offerPrice" class="form-control" id="offerPrice" name="offerPrice" value="{{row[4]| int}}" placeholder="{{row[4]}}" />
               <input type="editOfferId" class="form-control" id="editOfferId" name="editOfferId" hidden value="{{row[0]}}"/>
             </div>   
             <label for="offerStatus">Offer status</label> 
