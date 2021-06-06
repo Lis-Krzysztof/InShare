@@ -1,11 +1,6 @@
 import pyodbc
-import base64
-
 
 query='SELECT * FROM dbo.ActiveOffers'
-
-
-
 
 def readData(query):
     server = '.' 
