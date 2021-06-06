@@ -1,11 +1,8 @@
 from flask import Blueprint, render_template,redirect, url_for
 from .models import readData, readTable
-
 from flask.globals import session
 
-
 views = Blueprint('views', __name__)
-
 
 @views.route('/')
 def home():

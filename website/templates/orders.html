@@ -19,7 +19,6 @@
       <div class="col-sm-3"></div>
 </div>
 
-
   <br>
   <table class="table table-bordered table-striped">
     <thead>
@@ -53,7 +52,6 @@
           
       </tr>
 
-
       <!--Info Modal -->
 <div class="modal fade" id="infoModal{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <form method="POST"> 
@@ -72,8 +70,6 @@
           <h3>{{row[11]| int}} zł</h3>
           <h2>Price per day:</h2>
           <h3>{{row[12]| int}} zł</h3>
-
-          
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -82,19 +78,11 @@
   </div>
   </form>
 </div>
-
-
-
       {% endfor %}
     </tbody>
   </table>
-  
   <p>Start typing to search for products</p>
-
-
 {%endif%}
-
-
 <script>
     $(document).ready(function(){
       $("#myInput").on("keyup", function() {

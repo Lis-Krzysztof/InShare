@@ -89,7 +89,6 @@
           <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">$</span>
-                
               </div>
               <input type="offerValue" class="form-control" id="offerValue" name="offerValue" value="{{row[5]| int}}" placeholder="{{row[5]}}">
               <div class="input-group-append">
@@ -125,9 +124,6 @@
   </form>
 </div>
 
-
-
-
 <!--Delete Modal -->
 <div class="modal fade" id="deleteModal{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <form method="POST">
@@ -148,8 +144,6 @@
                 <input type="deleteOfferId" class="form-control" id="deleteOfferId" name="deleteOfferId" hidden value="{{row[0]}}"/>
               </div>
           </div>
-          
-        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -159,18 +153,11 @@
   </div>
   </form>
 </div>  
-
-
-
       {% endfor %}
     </tbody>
   </table>
-  
   <p>Start typing to search for products</p>
 </div>
-
-
-
 
 <script>
     $(document).ready(function(){
@@ -182,4 +169,5 @@
       });
     });
     </script>
+    
 {% endblock %}

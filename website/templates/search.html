@@ -16,7 +16,6 @@
       <div class="col-sm-3"></div>
 </div>
 <div class="row">
-
   <br>
   <table class="table table-bordered table-striped">
     <thead>
@@ -47,7 +46,6 @@
         </td>
       </tr>
       
-
 <!--Rent Modal -->
 <div class="modal fade" id="rentModal{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <form method="POST"> 
@@ -86,16 +84,12 @@
           </div> 
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-success">Rent</button>
-        
+        <button type="submit" class="btn btn-success">Rent</button>       
       </div>
     </div>
   </div>
   </form>
 </div>
-
-
-
 
 <!--Raport Modal -->
 <div class="modal fade" id="reportModal{{row[0]}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -103,14 +97,14 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Raport Offer</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Report Offer</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
           <div class="form-group">
-              <label for="reportDescription">Describe the prroblem:</label> 
+              <label for="reportDescription">Describe the problem:</label> 
               <textarea type="reportDescription" class="form-control" id="reportDescription" name="reportDescription" placeholder="..." ></textarea>
               <input type="reportOfferId" class="form-control" id="reportOfferId" name="reportOfferId" hidden value="{{row[0]}}"/>
           </div> 
@@ -134,16 +128,11 @@
   </div>
   </form>  
 </div>  
-
       {% endfor %}
     </tbody>
-  </table>
-  
+  </table> 
   <p>Start typing to search for products</p>
 </div>
-
-
-
 
 <script>
     $(document).ready(function(){
