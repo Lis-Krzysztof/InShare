@@ -2,6 +2,9 @@
 <div class="row">
       <div class="col-sm-3"></div>
       <div class="col-sm-6">
+      {% if data == False %}
+        <h3 align="center">There is no offers yet!</h3>
+      {% else %}  
         <form method="POST"> 
             <br /><br />
             <h3 align="center">Search for offers</h3> 
@@ -144,4 +147,5 @@
       });
     });
     </script>
+{% endif %}
 {% endblock %}
